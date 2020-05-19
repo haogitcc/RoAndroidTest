@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">串口调试助手</string>
-    <string name="select_serial_port">串口设备:</string>
+    <string name="select_serial_port">串口:</string>
     <string name="select_baud_rate">波特率</string>
     <string name="open_serial_port">打开串口</string>
     <string name="close_serial_port">关闭串口</string>

@@ -11,9 +11,9 @@ public class RecvMessage implements IMessage {
     private String command;
     private String message;
 
-    public RecvMessage(String command) {
+    public RecvMessage(String endian, String command) {
         this.command = command;
-        this.message = TimeUtil.currentTime() + "    收到命令：" + command;
+        this.message = TimeUtil.currentTime() + "    " + endian + " <-- 收到命令：" + command;
     }
 
     @Override

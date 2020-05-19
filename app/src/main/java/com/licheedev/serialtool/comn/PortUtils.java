@@ -13,14 +13,14 @@ import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import java.io.File;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
 /**
  * Created by Administrator on 2017/3/28 0028.
  */
-public class SerialPortManager {
+public class PortUtils {
 
     private static final String TAG = "SerialPortManager";
 
@@ -28,62 +28,29 @@ public class SerialPortManager {
     private OutputStream mOutputStream;
     private HandlerThread mWriteThread;
     private Scheduler mSendScheduler;
+    String endian;
+    SerialPort mSerialPort;
 
-    private static class InstanceHolder {
-
-        public static SerialPortManager sManager = new SerialPortManager();
+    public PortUtils(String path, SerialPort rs) {
+        this.endian = path;
+        this.mSerialPort = rs;
     }
 
-    public static SerialPortManager instance() {
-        return InstanceHolder.sManager;
-    }
-
-    private SerialPort mSerialPort;
-
-    private SerialPortManager() {
-    }
-
-    /**
-     * 打开串口
-     *
-     * @param device
-     * @return
-     */
-    public SerialPort open(Device device) {
-        return open(device.getPath(), device.getBaudrate());
-    }
-
-    /**
-     * 打开串口
-     *
-     * @param devicePath
-     * @param baudrateString
-     * @return
-     */
-    public SerialPort open(String devicePath, String baudrateString) {
-        if (mSerialPort != null) {
-            close();
-        }
+    public void start() {
 
         try {
-            File device = new File(devicePath);
-            int baurate = Integer.parseInt(baudrateString);
-            mSerialPort = new SerialPort(device, baurate, 0);
-
-            mReadThread = new SerialReadThread("", mSerialPort.getInputStream());
+            mReadThread = new SerialReadThread(endian, mSerialPort.getInputStream());
             mReadThread.start();
 
             mOutputStream = mSerialPort.getOutputStream();
 
-            mWriteThread = new HandlerThread("write-thread");
+            mWriteThread = new HandlerThread(endian + " write-thread");
             mWriteThread.start();
             mSendScheduler = AndroidSchedulers.from(mWriteThread.getLooper());
 
-            return mSerialPort;
         } catch (Throwable tr) {
-            LogPlus.e(TAG, "打开串口失败", tr);
+            LogPlus.e(TAG, "start", tr);
             close();
-            return null;
         }
     }
 
@@ -94,6 +61,7 @@ public class SerialPortManager {
         if (mReadThread != null) {
             mReadThread.close();
         }
+
         if (mOutputStream != null) {
             try {
                 mOutputStream.close();
@@ -104,11 +72,6 @@ public class SerialPortManager {
 
         if (mWriteThread != null) {
             mWriteThread.quit();
-        }
-
-        if (mSerialPort != null) {
-            mSerialPort.close();
-            mSerialPort = null;
         }
     }
 
@@ -138,7 +101,7 @@ public class SerialPortManager {
                     emitter.onNext(new Object());
                 } catch (Exception e) {
 
-                    LogPlus.e("发送：" + ByteUtil.bytes2HexStr(datas) + " 失败", e);
+                    LogPlus.e(endian + " 发送：" + ByteUtil.bytes2HexStr(datas) + " 失败", e);
 
                     if (!emitter.isDisposed()) {
                         emitter.onError(e);
@@ -155,24 +118,24 @@ public class SerialPortManager {
      */
     public void sendCommand(final String command) {
 
-        // TODO: 2018/3/22  
-        LogPlus.i("发送命令：" + command);
+        // TODO: 2018/3/22
+        LogPlus.i(endian + " 发送命令：" + command);
 
         byte[] bytes = ByteUtil.hexStr2bytes(command);
         rxSendData(bytes).subscribeOn(mSendScheduler).subscribe(new Observer<Object>() {
             @Override
             public void onSubscribe(Disposable d) {
-                
+
             }
 
             @Override
             public void onNext(Object o) {
-                LogManager.instance().post(new SendMessage("", command));
+                LogManager.instance().post(new SendMessage(endian, command));
             }
 
             @Override
             public void onError(Throwable e) {
-                LogPlus.e("发送失败", e);
+                LogPlus.e(endian + " 发送失败", e);
             }
 
             @Override
