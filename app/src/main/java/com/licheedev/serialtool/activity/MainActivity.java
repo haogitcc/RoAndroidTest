@@ -243,7 +243,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         portUtils.close();
 
         if(serialPort!=null) {
-            Log.d(TAG, "closeSerialPort: close " +serialPort);
             serialPort.close();
             serialPort = null;
             Log.d(TAG, "closeSerialPort: close success!");

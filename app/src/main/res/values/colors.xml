@@ -18,6 +18,9 @@
     <color name="white">#ffffffff</color>
     <color name="color_888888">#888888</color>
     <color name="color_20ffffff">#20ffffff</color>
-    
+
+    <color name="color_red">#ffff0000</color>
+    <color name="color_green">#ff00ff00</color>
+    <color name="color_blue">#ff0000ff</color>
 
 </resources>

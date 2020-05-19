@@ -40,5 +40,20 @@
         <item>3：慢 60ms</item>
     </string-array>
 
+    <string-array name="gpios">
+        <item>in1</item>
+        <item>in2</item>
+        <item>in3</item>
+        <item>in4</item>
+        <item>led1</item>
+        <item>led2</item>
+        <item>led3</item>
+        <item>out1</item>
+        <item>out2</item>
+        <item>out3</item>
+        <item>out4</item>
+        <item>rs485_de</item>
+    </string-array>
+
 
 </resources>

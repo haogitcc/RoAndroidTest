@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">串口调试助手</string>
+    <string name="app_name">测试工具v1.0</string>
     <string name="select_serial_port">串口:</string>
     <string name="select_baud_rate">波特率</string>
     <string name="open_serial_port">打开串口</string>
@@ -8,5 +8,11 @@
     <string name="send_data">发送命令</string>
     <string name="input_data">输入命令</string>
     <string name="load_cmd_list">加载命令列表</string>
-  
+    <string name="start_title">测试工具</string>
+    <string name="get_gpio_value">获取</string>
+    <string name="set_gpio_value">设置</string>
+    <string name="led1">LED1</string>
+    <string name="led2">LED2</string>
+    <string name="led3">LED3</string>
+
 </resources>
