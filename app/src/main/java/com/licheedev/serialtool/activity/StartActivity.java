@@ -44,7 +44,7 @@ public class StartActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.can_test_btn:
                 break;
-            case R.id.led_test_btn:
+            case R.id.lora_test_btn:
                 break;
             case R.id.psam_test_btn:
                 break;

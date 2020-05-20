@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">测试工具v1.0</string>
+    <string name="start_title">测试工具</string>
+    <string name="serial_test">串口测试</string>
+    <string name="device_test">GPIO/LED测试</string>
+    <string name="lora_test">Lora测试</string>
+    <string name="can_test">Can总线测试</string>
+    <string name="psam_test">PSAM测试</string>
+
+    <!--    串口测试-->
     <string name="select_serial_port">串口:</string>
     <string name="select_baud_rate">波特率</string>
     <string name="open_serial_port">打开串口</string>
@@ -8,7 +16,9 @@
     <string name="send_data">发送命令</string>
     <string name="input_data">输入命令</string>
     <string name="load_cmd_list">加载命令列表</string>
-    <string name="start_title">测试工具</string>
+    <string name="rs485_use_as_recive">RS485作为接收</string>
+
+<!--    GPIO测试-->
     <string name="get_gpio_value">获取</string>
     <string name="set_gpio_value">设置</string>
     <string name="led1">LED1</string>

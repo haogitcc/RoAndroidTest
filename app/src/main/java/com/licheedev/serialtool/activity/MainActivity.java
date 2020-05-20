@@ -10,8 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.licheedev.serialtool.R;
 import com.licheedev.serialtool.activity.base.BaseActivity;
@@ -25,10 +28,11 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import jnigpio.GPIOControl;
 
 import static com.licheedev.serialtool.R.array.baudrates;
 
-public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "MainActivity";
     @BindView(R.id.spinner_devices)
@@ -56,6 +60,9 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     Button mBtnLoadList_RS485;
     @BindView(R.id.et_data_1)
     EditText mEtData_RS485;
+
+    @BindView(R.id.rs485_as_receive_cb)
+    CheckBox rs485AsReceiveCb;
 
 
     private String[] mDevices;
@@ -265,5 +272,20 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
         // 空实现
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId())
+        {
+            case R.id.rs485_as_receive_cb:
+                GPIOControl gpioControl = new GPIOControl();
+                String device_path = "/sys/class/hwmon/hwmon0/" + "rs485_de";
+                if(gpioControl.setDeviceStatus(device_path, isChecked?1:0) == 0)
+                    Toast.makeText(this, "设置半双工rs485失败!", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
     }
 }
