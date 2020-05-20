@@ -17,8 +17,8 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.licheedev.serialtool.activity.MainActivity"
-            android:screenOrientation="landscape"
+            android:name="com.licheedev.serialtool.activity.StartActivity"
+            android:screenOrientation="fullSensor"
             android:theme="@style/AppThemeNoActionBar"
             android:windowSoftInputMode="stateHidden|stateUnchanged">
             <intent-filter>
@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.GpioActivity" />
         <activity android:name=".activity.LoadCmdListActivity" />
 
     </application>

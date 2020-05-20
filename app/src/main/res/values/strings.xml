@@ -15,4 +15,15 @@
     <string name="led2">LED2</string>
     <string name="led3">LED3</string>
 
+    <string name="gpio_in_all">All</string>
+    <string name="gpio_in_1">In_1</string>
+    <string name="gpio_in_2">In_2</string>
+    <string name="gpio_in_3">In_3</string>
+    <string name="gpio_in_4">In_4</string>
+    <string name="gpio_out_1">Out_1</string>
+    <string name="gpio_out_2">Out_2</string>
+    <string name="gpio_out_3">Out_3</string>
+    <string name="gpio_out_4">Out_4</string>
+    <string name="gpio_set_checkbox">设置</string>
+
 </resources>
