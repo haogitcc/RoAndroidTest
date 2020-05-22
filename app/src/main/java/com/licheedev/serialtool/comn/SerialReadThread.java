@@ -6,7 +6,7 @@ import android.util.Log;
 import com.licheedev.myutils.LogPlus;
 import com.licheedev.serialtool.comn.message.LogManager;
 import com.licheedev.serialtool.comn.message.RecvMessage;
-import com.licheedev.serialtool.util.ByteUtil;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,8 +69,11 @@ public class SerialReadThread extends Thread {
      */
     private void onDataReceive(byte[] received, int size) throws UnsupportedEncodingException {
         // TODO: 2018/3/22 解决粘包、分包等
-        String hexStr = ByteUtil.bytes2HexStr(received, 0, size);
-        LogManager.instance().post(new RecvMessage(endian, hexStr));
+//        String hexStr = ByteUtil.bytes2HexStr(received, 0, size);
+//        LogManager.instance().post(new RecvMessage(endian, hexStr));
+        String revStr = new String(received,0,size, "ASCII");
+        Log.e(TAG, "<---- " + revStr );
+        LogManager.instance().post(new RecvMessage(endian, revStr));
     }
 
     /**

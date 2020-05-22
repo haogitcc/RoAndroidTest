@@ -7,12 +7,37 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.licheedev.serialtool.activity.MainActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_checkbox_height">
+        <CheckBox
+            android:id="@+id/lora_config_cmd_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/lora_configure_command"
+            android:checked="false" />
+
+        <CheckBox
+            android:id="@+id/test_multi_serial_cb"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/test_multi_sreial"
+            android:checked="true"/>
+
+        <CheckBox
+            android:id="@+id/second_serial_use_as_rs485"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/second_use_as_rs485"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         tools:context="com.licheedev.serialtool.activity.MainActivity">
+
 
         <LinearLayout
             android:layout_width="0dp"
@@ -82,21 +107,106 @@
 
 
                 </LinearLayout>
+                <!--                    android:digits="0123456789abcdefABCDEF"-->
+
                 <EditText
                     android:id="@+id/et_data"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_button_height"
-                    android:digits="0123456789abcdefABCDEF"
                     android:hint="@string/input_data"
                     android:inputType="textCapCharacters"
                     android:singleLine="true"
                     android:text="1122"
                     android:textSize="@dimen/edit_text_size" />
 
+                <Spinner
+                    android:id="@+id/lora_command_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/normal_120dp"
+                    android:entries="@array/command_values"
+                    android:visibility="gone" />
+
                 <Button
                     android:id="@+id/btn_send_data"
                     style="@style/ButtonStyle"
                     android:text="@string/send_data" />
+
+                <LinearLayout
+                    android:id="@+id/lora_radio_test_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <Button
+                        android:id="@+id/lora_radio_test_btn"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/default_button_height"
+                        android:text="@string/lora_radio"/>
+<!--                    <EditText-->
+<!--                        android:id="@+id/lora_radio_data_et"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="2"-->
+<!--                        android:layout_height="@dimen/default_button_height"-->
+<!--                        android:text="Radio Transport"-->
+<!--                        android:enabled="false"/>-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/lora_addr_from"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="@dimen/default_button_height"
+                        android:text="1001"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="to"/>
+
+                    <EditText
+                        android:id="@+id/lora_addr_to"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="@dimen/default_button_height"
+                        android:text="1002"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lora_pmac_unicast_test_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <Button
+                        android:id="@+id/lora_pmac_unicast_test_btn"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/default_button_height"
+                        android:text="@string/lora_pmac_unicast"/>
+<!--                    <EditText-->
+<!--                        android:id="@+id/lora_pmac_unicast_data_et"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_weight="2"-->
+<!--                        android:layout_height="@dimen/default_button_height"-->
+<!--                        android:text="PMAC Unicast Transport"-->
+<!--                        android:enabled="false"/>-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lora_pmac_broadcast_test_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+                    <Button
+                        android:id="@+id/lora_pmac_broadcast_test_btn"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="@dimen/default_button_height"
+                        android:text="@string/lora_pmac_broadcast"/>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_load_list"
@@ -107,10 +217,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/second_serial_layout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.4"
+                android:layout_weight="1.2"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/default_button_height"
@@ -167,11 +279,14 @@
                         android:textSize="@dimen/default_text_size" />
 
                 </LinearLayout>
+
                 <CheckBox
                     android:id="@+id/rs485_as_receive_cb"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/default_button_height"
-                    android:text="@string/rs485_use_as_recive"/>
+                    android:layout_height="@dimen/default_checkbox_height"
+                    android:text="@string/rs485_use_as_recive"
+                    android:visibility="gone" />
+
                 <EditText
                     android:id="@+id/et_data_1"
                     android:layout_width="match_parent"
@@ -192,7 +307,7 @@
                     android:id="@+id/btn_load_list_1"
                     style="@style/ButtonStyle"
                     android:text="@string/load_cmd_list"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -203,7 +318,7 @@
             layout="@layout/include_fragment_container"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1.2" />
 
     </LinearLayout>
 </LinearLayout>

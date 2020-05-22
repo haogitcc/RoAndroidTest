@@ -1,11 +1,17 @@
 package com.licheedev.serialtool.comn;
 
 import android.os.HandlerThread;
-import android.serialport.SerialPort;
+import android.serialport.api.SerialPort;
+import android.util.Log;
+
 import com.licheedev.myutils.LogPlus;
 import com.licheedev.serialtool.comn.message.LogManager;
 import com.licheedev.serialtool.comn.message.SendMessage;
 import com.licheedev.serialtool.util.ByteUtil;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -13,9 +19,6 @@ import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Created by Administrator on 2017/3/28 0028.
@@ -99,6 +102,7 @@ public class PortUtils {
                 try {
                     sendData(datas);
                     emitter.onNext(new Object());
+                    Log.e(TAG, "----> " + new String(datas, "ASCII") );
                 } catch (Exception e) {
 
                     LogPlus.e(endian + " 发送：" + ByteUtil.bytes2HexStr(datas) + " 失败", e);
@@ -121,7 +125,9 @@ public class PortUtils {
         // TODO: 2018/3/22
         LogPlus.i(endian + " 发送命令：" + command);
 
-        byte[] bytes = ByteUtil.hexStr2bytes(command);
+//        byte[] bytes = ByteUtil.hexStr2bytes(command);
+        String sendData = command + "\r";
+        byte[] bytes = sendData.getBytes();
         rxSendData(bytes).subscribeOn(mSendScheduler).subscribe(new Observer<Object>() {
             @Override
             public void onSubscribe(Disposable d) {

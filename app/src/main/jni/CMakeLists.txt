@@ -6,10 +6,9 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 add_library( SerialPort SHARED SerialPort.c )
-
 add_library( GPIOControl SHARED GPIOControl.c )
 
 find_library( log-lib log )
 
-target_link_libraries( SerialPort GPIOControl ${log-lib} )
+target_link_libraries( SerialPort  ${log-lib} )
 target_link_libraries( GPIOControl ${log-lib} )

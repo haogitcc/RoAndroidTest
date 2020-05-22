@@ -17,6 +17,12 @@
     <string name="input_data">输入命令</string>
     <string name="load_cmd_list">加载命令列表</string>
     <string name="rs485_use_as_recive">RS485作为接收</string>
+    <string name="test_multi_sreial">测试串口互发</string>
+    <string name="second_use_as_rs485">第二个作为RS485</string>
+    <string name="lora_configure_command">LoRa配置命令</string>
+    <string name="lora_radio">无线电（Radio）</string>
+    <string name="lora_pmac_unicast">PMAC单播</string>
+    <string name="lora_pmac_broadcast">PMAC广播</string>
 
 <!--    GPIO测试-->
     <string name="get_gpio_value">获取</string>

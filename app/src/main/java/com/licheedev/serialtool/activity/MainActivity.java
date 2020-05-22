@@ -2,8 +2,8 @@ package com.licheedev.serialtool.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.serialport.SerialPort;
-import android.serialport.SerialPortFinder;
+import android.serialport.api.SerialPort;
+import android.serialport.api.SerialPortFinder;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +25,8 @@ import com.licheedev.serialtool.util.ToastUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,7 +34,7 @@ import jnigpio.GPIOControl;
 
 import static com.licheedev.serialtool.R.array.baudrates;
 
-public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
     private static final String TAG = "MainActivity";
     @BindView(R.id.spinner_devices)
@@ -61,12 +63,22 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     @BindView(R.id.et_data_1)
     EditText mEtData_RS485;
 
-    @BindView(R.id.rs485_as_receive_cb)
+    CheckBox loraConfigCmdCb;
+    Spinner loraConfigCmdSpinner;
+    CheckBox multiSerialCb;
+    CheckBox secondUseAsRs485Cb;
     CheckBox rs485AsReceiveCb;
-
+    Button radioBtn;
+    Button pmacUnicastBtn;
+    Button pmacBroadcastBtn;
+//    EditText radioEt;
+//    EditText pmacUnicastEt;
+    EditText fromAddrEt;
+    EditText toAddrEt;
 
     private String[] mDevices;
     private String[] mBaudrates;
+    private String[] mCmdList;
 
     private boolean mIsOpen = false;
     private boolean mIsOpen_RS485 = false;
@@ -83,12 +95,47 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initViews();
+
+        multiSerialCb.setOnCheckedChangeListener(this);
+        secondUseAsRs485Cb.setOnCheckedChangeListener(this);
+        rs485AsReceiveCb.setOnCheckedChangeListener(this);
+        loraConfigCmdCb.setOnCheckedChangeListener(this);
+
+        radioBtn.setOnClickListener(this);
+        pmacUnicastBtn.setOnClickListener(this);
+        pmacBroadcastBtn.setOnClickListener(this);
+
         mEtData.setTransformationMethod(new AllCapTransformationMethod(true));
 
+        updateForMultiSerial(multiSerialCb.isChecked());
+
         initDevice();
+        mCmdList = getResources().getStringArray(R.array.lora_demos);
         initSpinners();
         mDevice = new Device();
         mDevice_RS485 = new Device();
+    }
+
+    private void updateForMultiSerial(boolean isMulti) {
+        findViewById(R.id.second_serial_layout).setVisibility(isMulti?View.VISIBLE:View.GONE);
+        secondUseAsRs485Cb.setVisibility(isMulti?View.VISIBLE:View.GONE);
+        updateForUseAsRs485(rs485AsReceiveCb.isChecked());
+    }
+
+    private void updateForUseAsRs485(boolean useAsRs485) {
+        rs485AsReceiveCb.setVisibility(useAsRs485?View.VISIBLE:View.GONE);
+    }
+
+    private void updateForLoRaConfigCmd(boolean isChecked) {
+        int visable = isChecked?View.VISIBLE:View.GONE;
+        loraConfigCmdSpinner.setVisibility(visable);
+        findViewById(R.id.lora_radio_test_layout).setVisibility(visable);
+        findViewById(R.id.lora_pmac_unicast_test_layout).setVisibility(visable);
+        findViewById(R.id.lora_pmac_broadcast_test_layout).setVisibility(visable);
+        int invisable = (!isChecked)?View.VISIBLE:View.GONE;
+        mEtData.setVisibility(invisable);
+        findViewById(R.id.second_serial_layout).setVisibility(invisable);
     }
 
     @Override
@@ -104,6 +151,25 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
+    }
+
+    private void initViews()
+    {
+        multiSerialCb = findViewById(R.id.test_multi_serial_cb);
+        secondUseAsRs485Cb = findViewById(R.id.second_serial_use_as_rs485);
+        rs485AsReceiveCb = findViewById(R.id.rs485_as_receive_cb);
+
+        loraConfigCmdCb = findViewById(R.id.lora_config_cmd_cb);
+        loraConfigCmdSpinner = findViewById(R.id.lora_command_spinner);
+
+//        radioEt = findViewById(R.id.lora_radio_data_et);
+//        pmacUnicastEt = findViewById(R.id.lora_pmac_unicast_data_et);
+        radioBtn = findViewById(R.id.lora_radio_test_btn);
+        pmacUnicastBtn = findViewById(R.id.lora_pmac_unicast_test_btn);
+        pmacBroadcastBtn = findViewById(R.id.lora_pmac_broadcast_test_btn);
+
+        fromAddrEt = findViewById(R.id.lora_addr_from);
+        toAddrEt = findViewById(R.id.lora_addr_to);
     }
 
     /**
@@ -129,28 +195,33 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
      * 初始化下拉选项
      */
     private void initSpinners() {
-
+//Devices
         ArrayAdapter<String> deviceAdapter = new ArrayAdapter<String>(this, R.layout.spinner_default_item, mDevices);
         deviceAdapter.setDropDownViewResource(R.layout.spinner_item);
         mSpinnerDevices.setAdapter(deviceAdapter);
-        mSpinnerDevices.setOnItemSelectedListener(this);
-
         mSpinnerDevices_RS485.setAdapter(deviceAdapter);
+
+        mSpinnerDevices.setOnItemSelectedListener(this);
         mSpinnerDevices_RS485.setOnItemSelectedListener(this);
 
+        mSpinnerDevices.setSelection(11);
+        mSpinnerDevices_RS485.setSelection(4);
+//Baudrates
         ArrayAdapter<String> baudrateAdapter = new ArrayAdapter<String>(this, R.layout.spinner_default_item, mBaudrates);
         baudrateAdapter.setDropDownViewResource(R.layout.spinner_item);
         mSpinnerBaudrate.setAdapter(baudrateAdapter);
         mSpinnerBaudrate.setOnItemSelectedListener(this);
 
-
         mSpinnerBaudrate_RS485.setAdapter(baudrateAdapter);
         mSpinnerBaudrate_RS485.setOnItemSelectedListener(this);
 
-        mSpinnerDevices.setSelection(11);
         mSpinnerBaudrate.setSelection(12);
-        mSpinnerDevices_RS485.setSelection(4);
         mSpinnerBaudrate_RS485.setSelection(12);
+
+        ArrayAdapter<String> loraCmdAdapter = new ArrayAdapter<String>(this, R.layout.spinner_default_item, mCmdList);
+        loraCmdAdapter.setDropDownViewResource(R.layout.spinner_item);
+        loraConfigCmdSpinner.setAdapter(loraCmdAdapter);
+        loraConfigCmdSpinner.setOnItemSelectedListener(this);
     }
 
     @OnClick({ R.id.btn_open_device, R.id.btn_send_data, R.id.btn_load_list,
@@ -197,7 +268,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 }
                 break;
             case R.id.btn_send_data:
-                sendData(mDevice.getPath(), portUtils, mEtData.getText().toString().trim());
+                String data;
+                if(loraConfigCmdCb.isChecked())
+                    data = loraConfigCmdSpinner.getSelectedItem().toString();
+                else
+                    data  = mEtData.getText().toString().trim();
+                sendData(mDevice.getPath(), portUtils, data);
                 break;
             case R.id.btn_send_data_1:
                 sendData(mDevice_RS485.getPath(), portUtils_RS485, mEtData_RS485.getText().toString().trim());
@@ -212,7 +288,7 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void sendData(String mSender, PortUtils portUtils, String sendMsg)
     {
-        if (TextUtils.isEmpty(sendMsg) || sendMsg.length() % 2 != 0) {
+        if (TextUtils.isEmpty(sendMsg) /*|| sendMsg.length() % 2 != 0*/) {
             ToastUtil.showOne(this, "无效数据: isEmpty 或者 length() % 2 != 0");
             return;
         }
@@ -278,11 +354,104 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId())
         {
+            case  R.id.lora_config_cmd_cb:
+                updateForLoRaConfigCmd(isChecked);
+                break;
+            case R.id.test_multi_serial_cb:
+                updateForMultiSerial(isChecked);
+                break;
+            case R.id.second_serial_use_as_rs485:
+                updateForUseAsRs485(isChecked);
+                break;
             case R.id.rs485_as_receive_cb:
                 GPIOControl gpioControl = new GPIOControl();
                 String device_path = "/sys/class/hwmon/hwmon0/" + "rs485_de";
                 if(gpioControl.setDeviceStatus(device_path, isChecked?1:0) == 0)
                     Toast.makeText(this, "设置半双工rs485失败!", Toast.LENGTH_LONG).show();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        List<String> datalist = new ArrayList<String>();
+        switch (v.getId()) {
+            case R.id.lora_radio_test_btn:
+                datalist.clear();
+                datalist.add("+++");
+                datalist.add("at+def");
+                datalist.add("+++");
+                datalist.add("at+freq=470000000");
+                datalist.add("at+sf=12");
+                datalist.add("at+bw=125");
+                datalist.add("at+mode=radio");
+                datalist.add("at+reboot");
+                datalist.add("+++");
+                datalist.add("at+exit");
+                datalist.add("Radio 470MHz test");
+
+                String[] datas = datalist.toArray(new String[datalist.size()]);
+                for (String data : datas) {
+                    Log.d(TAG, "Radio test: " + data);
+                    sendData(mDevice.getPath(), portUtils, data);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case R.id.lora_pmac_unicast_test_btn:
+                datalist.clear();
+                datalist.add("+++");
+                datalist.add("at+def");
+                datalist.add("+++");
+                datalist.add("at+mode=pmac");
+                datalist.add("at+reboot");
+                datalist.add("+++");
+                datalist.add("at+plocal=0x"+fromAddrEt.getText().toString().trim());
+                datalist.add("at+ptransdest=0x"+toAddrEt.getText().toString().trim());
+                datalist.add("at+ptransmode=ucast");
+                datalist.add("at+exit");
+                datalist.add("PMAC Unicast test");
+
+                String[] datas1 = datalist.toArray(new String[datalist.size()]);
+                for (String data : datas1) {
+                    Log.d(TAG, "Unicast test: " + data);
+                    sendData(mDevice.getPath(), portUtils, data);
+
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case R.id.lora_pmac_broadcast_test_btn:
+                datalist.clear();
+                datalist.add("+++");
+                datalist.add("at+def");
+                datalist.add("+++");
+                datalist.add("at+mode=pmac");
+                datalist.add("at+reboot");
+                datalist.add("+++");
+                datalist.add("at+ptransdest=0xffff");
+                datalist.add("at+ptransmode=ucast");
+                datalist.add("at+exit");
+                datalist.add("PMAC BroadCast Test");
+
+                String[] datas2 = datalist.toArray(new String[datalist.size()]);
+                for (String data : datas2) {
+                    Log.d(TAG, "PMAC Brodcast test: " + data);
+                    sendData(mDevice.getPath(), portUtils, data);
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
             default:
                 break;

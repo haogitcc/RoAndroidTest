@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string-array name="baudrates">
         <item>110</item>
         <item>300</item>
@@ -60,5 +59,256 @@
         <item>1</item>
     </string-array>
 
+<!--    LoRa命令格式-->
+<!--    执行： at+<cmd><CR>-->
+<!--    查询：at+<cmd>=?<CR>-->
+<!--    配置： at+<cmd>=<param1>[,param2] ...<CR>-->
+    <string-array name="command_values">
+        <item>+++</item>
+        <item>at+exit</item>
+        <item>1------ Radio 类命令 ----</item>
+        <item>at+ver=?</item>
+        <item>at+reboot</item>
+        <item>at+def</item>
 
+        <item>at+echo=?</item>
+        <item>at+echo=on</item>
+        <item>at+echo=off</item>
+
+        <item>at+rxfmt=?</item>
+        <item>at+rxfmt=hex</item>
+        <item>at+rxfmt=raw</item>
+
+        <item>at+mode=?</item>
+        <item>at+mode=radio</item>
+        <item>at+mode=pmac</item>
+        <item>at+mode=mac</item>
+
+        <item>at+sleep=?</item>
+        <item>at+sleep=off,1000,level,low</item>
+        <item>at+sleep=light,1000,level,low</item>
+
+        <item>at+irq?</item>
+        <item>at+irq=rise,10</item>
+
+        <item>------ 串口设置类命令 ----</item>
+        <item>at+uartcfg=?</item>
+        <item>at+uartcfg=115200,8,n,1</item>
+        <item>at+uartpack=?</item>
+        <item>at+uartpack=100,20</item>
+
+        <item>2------ Radio类命令 ----</item>
+        <item>at+radiotx=hello Ascii</item>
+        <item>at+radiotxhex=0af3</item>
+        <item>at+radiorx=?</item>
+        <item>连续接收</item>
+        <item>at+radiorx=0</item>
+        <item>单一接收</item>
+        <item>at+radiorx=5</item>
+
+        <item>at+rptr=?</item>
+        <item>at+rptr=on</item>
+        <item>at+rptr=off</item>
+
+        <item>at+freq=?</item>
+        <item>at+freq=433000000</item>
+
+        <item>at+sf=?</item>
+        <item>at+sf=12</item>
+
+        <item>at+bw=?</item>
+        <item>at+bw=250</item>
+
+        <item>at+cr=?</item>
+        <item>at+rxprlen=?</item>
+        <item>at+txprlen=?</item>
+        <item>at+crc=?</item>
+        <item>at+crc=on</item>
+        <item>at+crc=off</item>
+
+        <item>at+iqi=?</item>
+        <item>at+pwr=?</item>
+        <item>at+pwr=3</item>
+        <item>at+pwr=14</item>
+
+        <item>at+fh=?</item>
+        <item>at+fhch=?</item>
+
+        <item>2------ PMAC 类命令 ----</item>
+        <item>at+pnetid=?</item>
+        <item>at+pnetid=0x555</item>
+        <item>at+pnetid=0x666</item>
+
+        <item>at+plocal=?</item>
+        <item>at+plocal=0x1005</item>
+        <item>at+plocal=0x1006</item>
+
+        <item>at+ptransdest=?</item>
+        <item>at+ptransmode=?</item>
+        <item>at+ptransnetid=?</item>
+        <item>at+pgroup=?</item>
+        <item>at+pintranet=?</item>
+        <item>at+pmactx=?</item>
+        <item>at+pmactxhex=?</item>
+        <item>at+pcsma=?</item>
+
+        <item>at+class=?</item>
+        <item>at+join=?</item>
+        <item>at+mactx=?</item>
+        <item>at+mactxhex=?</item>
+        <item>at+devaddr=?</item>
+        <item>at+deveui=?</item>
+        <item>at+appeui=?</item>
+        <item>at+appkey=?</item>
+        <item>at+appskey=?</item>
+        <item>at+nwkskey=?</item>
+        <item>at+pwridx=?</item>
+        <item>at+dr=?</item>
+        <item>at+adr=?</item>
+        <item>at+retx=?</item>
+        <item>at+ch=?</item>
+        <item>at+transfport=?</item>
+        <item>at+transcnf=?</item>
+        <item>at+group=?</item>
+
+        <item>at+pmactest=?</item>
+    </string-array>
+
+    <string-array name="lora_demos">
+        <item>Transport</item>
+        <item>常用查询</item>
+        <item>+++</item>
+        <item>at+ver=?</item>
+        <item>at+def</item>
+        <item>+++</item>
+        <item>at+reboot</item>
+        <item>+++</item>
+        <item>at+rxfmt=?</item>
+        <item>at+mode=?</item>
+
+        <item>at+uartcfg=?</item>
+        <item>at+uartpack=?</item>
+
+        <item>at+pnetid=?</item>
+        <item>at+plocal=?</item>
+        <item>at+ptransdest=?</item>
+        <item>at+ptransmode=?</item>
+        <item>at+ptransnetid=?</item>
+        <item>at+pgroup=?</item>
+
+        <!--ssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
+        <item>1) Radio通讯示例</item>
+        <item>- 进入AT模式 AB---- </item>
+        <item>+++</item>
+        <item>at+def</item>
+        <item>+++</item>
+        <item>at+freq=470000000</item>
+        <item>at+sf=12</item>
+        <item>at+bw=125</item>
+        <item>at+mode=radio</item>
+        <item>at+reboot</item>
+        <item>+++</item>
+        <item>-- A模块发送 ---- </item>
+        <item>at+radiotx=Radio test1</item>
+        <item>at+radiotx=Radio test2</item>
+
+        <item>- 退出AT模式 ---- </item>
+        <item>at+exit</item>
+        <item>- 透传发送 ---- </item>
+        <item>Radio Transport1</item>
+        <item>Radio Transport2</item>
+<!--ssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
+        <item>2) PMAC 单播通信示例</item>
+        <item>- 进入AT模式 AB---- </item>
+        <item>+++</item>
+        <item>at+def</item>
+        <item>+++</item>
+        <item>at+mode=pmac</item>
+        <item>at+reboot</item>
+        <item>+++</item>
+        <item>-- 设置A模块地址为1001, 目标地址为1002, 发给B Lanvee ---- </item>
+        <item>at+plocal=0x1001</item>
+        <item>at+ptransdest=0x1002</item>
+        <item>at+pmactx=ucast,0x1002,PamcTest1</item>
+
+        <item>-- 设置B模块地址为1002 ---- </item>
+        <item>at+plocal=0x1002</item>
+        <item>at+ptransdest=0x1001</item>
+        <item>at+pmactx=ucast,0x1001,PamcTest2</item>
+
+        <item>- A模块透传到B模块</item>
+        <item>at+ptransdest=0x1002</item>
+        <item>at+ptransmode=ucast</item>
+
+        <item>- 退出AT模式 ---- </item>
+        <item>at+exit</item>
+
+        <item>- 透传发送 ---- </item>
+        <item>Unicast Transport1</item>
+
+        <!--ssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
+        <item>3) PMAC 组播通信示例</item>
+        <item>- 进入AT模式 ABCD---- </item>
+        <item>+++</item>
+        <item>at+def</item>
+        <item>+++</item>
+        <item>at+mode=pmac</item>
+        <item>at+reboot</item>
+        <item>+++</item>
+
+        <item>-- 设置A模块为0x1组 ---- </item>
+        <item>at+pgroup=add,0x1</item>
+
+        <item>-- 设置B模块为0x1,0x2,0x4组 ---- </item>
+        <item>at+pgroup=add,0x1</item>
+        <item>at+pgroup=add,0x2</item>
+        <item>at+pgroup=add,0x4</item>
+
+        <item>-- 设置C模块为0x1,0x2,0x3组 ---- </item>
+        <item>at+pgroup=add,0x1</item>
+        <item>at+pgroup=add,0x2</item>
+        <item>at+pgroup=add,0x4</item>
+
+        <item>将模块 D 以组播方式发送数据，首先是发送组地址为 0x1 的数据</item>
+        <item>at+pmactx=mcast,0x1,MulticastTo1</item>
+        <item>at+pmactx=mcast,0x2,MulticastTo2</item>
+        <item>at+pmactx=mcast,0x3,MulticastTo3</item>
+        <item>at+pmactx=mcast,0x4,MulticastTo4</item>
+
+        <item>- 透传模式,组播数据</item>
+        <item>at+ptransdest=0x2</item>
+        <item>at+ptransmode=mcast</item>
+
+        <item>- 退出AT模式 ---- </item>
+        <item>at+exit</item>
+
+        <item>- 透传发送 ---- </item>
+        <item>Multicast Transport1</item>
+        <item>Multicast Transport2</item>
+        <item>Multicast Transport3</item>
+        <item>Multicast Transport4</item>
+
+        <!--ssssssssssssssssssssssssssssssssssssssssssssssssssssss-->
+        <item>3) PMAC 广播播通信示例</item>
+        <item>- 进入AT模式 ABCD---- </item>
+        <item>+++</item>
+        <item>at+def</item>
+        <item>+++</item>
+        <item>at+mode=pmac</item>
+        <item>at+reboot</item>
+        <item>+++</item>
+
+        <item>-- A模块广播 ---- </item>
+        <item>at+pmactx=ucast,0xffff,LanveeBro</item>
+
+        <item>- 透传模式,广播数据</item>
+        <item>at+ptransdest=0xffff</item>
+
+        <item>- 退出AT模式 ---- </item>
+        <item>at+exit</item>
+
+        <item>-- 透传发送 ---- </item>
+        <item>Brocast Transport1</item>
+        <item>Brocast Transport2</item>
+    </string-array>
 </resources>

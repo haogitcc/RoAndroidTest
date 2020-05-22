@@ -1,11 +1,17 @@
 package com.licheedev.serialtool.comn;
 
 import android.os.HandlerThread;
-import android.serialport.SerialPort;
+import android.serialport.api.SerialPort;
+
 import com.licheedev.myutils.LogPlus;
 import com.licheedev.serialtool.comn.message.LogManager;
 import com.licheedev.serialtool.comn.message.SendMessage;
 import com.licheedev.serialtool.util.ByteUtil;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -13,9 +19,6 @@ import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * Created by Administrator on 2017/3/28 0028.
