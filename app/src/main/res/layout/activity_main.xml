@@ -152,30 +152,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <EditText
-                        android:id="@+id/lora_addr_from"
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_height="@dimen/default_button_height"
-                        android:text="1001"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="match_parent"
-                        android:text="to"/>
-
-                    <EditText
-                        android:id="@+id/lora_addr_to"
-                        android:layout_width="0dp"
-                        android:layout_weight="2"
-                        android:layout_height="@dimen/default_button_height"
-                        android:text="1002"/>
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/lora_pmac_unicast_test_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,6 +162,30 @@
                         android:layout_weight="1"
                         android:layout_height="@dimen/default_button_height"
                         android:text="@string/lora_pmac_unicast"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+                        <EditText
+                            android:id="@+id/lora_addr_from"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="@dimen/default_button_height"
+                            android:text="1001"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent"
+                            android:text="to"/>
+
+                        <EditText
+                            android:id="@+id/lora_addr_to"
+                            android:layout_width="0dp"
+                            android:layout_weight="2"
+                            android:layout_height="@dimen/default_button_height"
+                            android:text="1002"/>
+                    </LinearLayout>
 <!--                    <EditText-->
 <!--                        android:id="@+id/lora_pmac_unicast_data_et"-->
 <!--                        android:layout_width="0dp"-->

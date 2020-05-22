@@ -118,6 +118,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     }
 
     private void updateForMultiSerial(boolean isMulti) {
+        if(loraConfigCmdCb.isChecked())
+            loraConfigCmdCb.setChecked(!isMulti);
         findViewById(R.id.second_serial_layout).setVisibility(isMulti?View.VISIBLE:View.GONE);
         secondUseAsRs485Cb.setVisibility(isMulti?View.VISIBLE:View.GONE);
         updateForUseAsRs485(rs485AsReceiveCb.isChecked());
@@ -129,13 +131,14 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void updateForLoRaConfigCmd(boolean isChecked) {
         int visable = isChecked?View.VISIBLE:View.GONE;
+        if(multiSerialCb.isChecked())
+            multiSerialCb.setChecked(!isChecked);
         loraConfigCmdSpinner.setVisibility(visable);
         findViewById(R.id.lora_radio_test_layout).setVisibility(visable);
         findViewById(R.id.lora_pmac_unicast_test_layout).setVisibility(visable);
         findViewById(R.id.lora_pmac_broadcast_test_layout).setVisibility(visable);
         int invisable = (!isChecked)?View.VISIBLE:View.GONE;
         mEtData.setVisibility(invisable);
-        findViewById(R.id.second_serial_layout).setVisibility(invisable);
     }
 
     @Override
