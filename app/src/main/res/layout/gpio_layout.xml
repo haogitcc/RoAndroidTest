@@ -17,30 +17,12 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <CheckBox
-                android:id="@+id/device_is_set_cb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gpio_set_checkbox"/>
-<!--            <EditText-->
-<!--                android:id="@+id/device_value_et"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:visibility="gone"/>-->
             <Spinner
                 android:id="@+id/device_value_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/edit_text_size"
-                android:visibility="gone"/>
-
-            <TextView
-                android:id="@+id/device_value_tv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="@dimen/edit_text_size"
-                android:gravity="center_horizontal" />
+                android:visibility="visible"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -53,44 +35,50 @@
             android:layout_weight="0.3"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/get_gpio_value"/>
+            android:text="@string/get_gpio_value"
+            android:onClick="getDeviceValus"/>
         <Button
             android:id="@+id/set_device_value_btn"
             android:layout_width="0dp"
             android:layout_weight="0.3"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/set_gpio_value"/>
+            android:text="@string/set_gpio_value"
+            android:onClick="setDeviceValus"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
-
-        <Button
+        <TextView
             android:id="@+id/btn_led1"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/led1"/>
+            android:text="@string/led1"
+            android:textSize="25dp"
+            android:onClick="setLedStatus"/>
 
-        <Button
+        <TextView
             android:id="@+id/btn_led2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/led2"/>/>
+            android:text="@string/led2"
+            android:textSize="25dp"
+            android:onClick="setLedStatus"/>
 
-        <Button
+        <TextView
             android:id="@+id/btn_led3"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/led3"/>/>
+            android:text="@string/led3"
+            android:textSize="25dp"
+            android:onClick="setLedStatus"/>
 
     </LinearLayout>
 
@@ -98,14 +86,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <CheckBox
             android:id="@+id/gpio_out_all_cb"
             android:layout_width="match_parent"
             android:layout_height="@dimen/default_gpio_height"
-            android:text="@string/gpio_in_all"/>
+            android:text="@string/gpio_in_all"
+            android:onClick="updateAllGpioCb"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gpio_height"
+            android:layout_height="@dimen/normal_80dp"
             android:orientation="horizontal">
             <CheckBox
                 android:id="@+id/gpio_out1_cb"
@@ -113,11 +104,41 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:text="@string/gpio_out_1"/>
-            <ImageView
+                android:text="@string/gpio_out_1"
+                android:onClick="gpioCheckUpdate"/>
+
+            <CheckBox
+                android:id="@+id/gpio_out2_cb"
                 android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="@dimen/default_gpio_height"/>
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="@string/gpio_out_2"
+                android:onClick="gpioCheckUpdate"/>
+
+            <CheckBox
+                android:id="@+id/gpio_out3_cb"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="@string/gpio_out_3"
+                android:onClick="gpioCheckUpdate"/>
+
+            <CheckBox
+                android:id="@+id/gpio_out4_cb"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="@string/gpio_out_4"
+                android:onClick="gpioCheckUpdate"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_gpio_height"
+            android:orientation="horizontal">
             <CheckBox
                 android:id="@+id/gpio_in1_cb"
                 android:layout_width="0dp"
@@ -126,24 +147,7 @@
                 android:layout_margin="5dp"
                 android:enabled="false"
                 android:text="@string/gpio_in_1"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gpio_height"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/gpio_out2_cb"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/gpio_out_2"/>
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="@dimen/default_gpio_height"/>
             <CheckBox
                 android:id="@+id/gpio_in2_cb"
                 android:layout_width="0dp"
@@ -152,24 +156,7 @@
                 android:layout_margin="5dp"
                 android:enabled="false"
                 android:text="@string/gpio_in_2"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gpio_height"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/gpio_out3_cb"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/gpio_out_3"/>
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="@dimen/default_gpio_height"/>
             <CheckBox
                 android:id="@+id/gpio_in3_cb"
                 android:layout_width="0dp"
@@ -178,24 +165,7 @@
                 android:layout_margin="5dp"
                 android:enabled="false"
                 android:text="@string/gpio_in_3"/>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/default_gpio_height"
-            android:orientation="horizontal">
-
-            <CheckBox
-                android:id="@+id/gpio_out4_cb"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:text="@string/gpio_out_4"/>
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="@dimen/default_gpio_height"/>
             <CheckBox
                 android:id="@+id/gpio_in4_cb"
                 android:layout_width="0dp"

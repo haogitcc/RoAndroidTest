@@ -41,5 +41,7 @@
     <string name="gpio_out_3">Out_3</string>
     <string name="gpio_out_4">Out_4</string>
     <string name="gpio_set_checkbox">设置</string>
+    <string name="test_all_gpio_success">Success</string>
+    <string name="test_all_gpio_failed">Failed!</string>
 
 </resources>
