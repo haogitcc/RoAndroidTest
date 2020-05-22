@@ -3,7 +3,7 @@
 
 # Sets the minimum version of CMake required to build the native library.
 #指定需要CMAKE的最小版本
-cmake_minimum_required(VERSION 3.4.1)
+#cmake_minimum_required(VERSION 3.4.1)
 
 #C 的编译选项是 CMAKE_C_FLAGS
 # 指定编译参数，可选
@@ -18,9 +18,16 @@ cmake_minimum_required(VERSION 3.4.1)
 #指定用到的系统库或者NDK库或者第三方库的搜索路径，可选。
 #LINK_DIRECTORIES(/usr/local/lib)
 
-#添加子目录,将会调用子目录中的CMakeLists.txt
-add_subdirectory(SerialPort)
-add_subdirectory(GpioControl)
-add_subdirectory(SCTool)
+#继承上一层的CMakeLists.txt的变量，也可以在这里重新赋值
+#C 的编译选项是 CMAKE_C_FLAGS
+# 指定编译参数，可选
+#SET(CMAKE_CXX_FLAGS "-Wno-error=format-security -Wno-error=pointer-sign")
 
+#include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+#生成so动态库
+add_library( SerialPort SHARED SerialPort.c )
+
+find_library( log-lib log )
+
+target_link_libraries( SerialPort  ${log-lib} )
 

@@ -20,14 +20,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/serial_test"/>
+            android:text="@string/serial_test"
+            android:onClick="startSerialPortTest"/>
 
         <Button
             android:id="@+id/gpio_test_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/device_test"/>
+            android:text="@string/device_test"
+            android:onClick="startGpioTest"/>
+
+        <Button
+            android:id="@+id/psam_test_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/psam_test"
+            android:onClick="startPsamTest"/>
 
         <Button
             android:id="@+id/can_test_btn"
@@ -36,19 +46,14 @@
             android:layout_marginTop="10dp"
             android:text="@string/can_test"/>
 
-        <Button
-            android:id="@+id/lora_test_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/lora_test"/>
+<!--        <Button-->
+<!--            android:id="@+id/lora_test_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:text="@string/lora_test"/>-->
 
-        <Button
-            android:id="@+id/psam_test_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/psam_test"/>
+
     </LinearLayout>
 
 </LinearLayout>

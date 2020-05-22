@@ -30,6 +30,7 @@
 
         <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.GpioActivity" />
+        <activity android:name=".activity.PsamActivity" />
         <activity android:name=".activity.LoadCmdListActivity" />
 
     </application>
