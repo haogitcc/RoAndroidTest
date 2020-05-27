@@ -287,8 +287,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
     }
 
-
-
     private void sendData(String mSender, PortUtils portUtils, String sendMsg)
     {
         if (TextUtils.isEmpty(sendMsg) /*|| sendMsg.length() % 2 != 0*/) {

@@ -44,14 +44,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="@string/can_test"/>
+            android:text="@string/can_test"
+            android:onClick="startCanTest"/>
 
-<!--        <Button-->
-<!--            android:id="@+id/lora_test_btn"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginTop="10dp"-->
-<!--            android:text="@string/lora_test"/>-->
+        <Button
+            android:id="@+id/lora_test_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/lora_test"
+            android:onClick="startLoRaTest"/>
 
 
     </LinearLayout>

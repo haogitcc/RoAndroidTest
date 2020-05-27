@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_button_height"
+        android:text="@string/lora_radio"
+        android:onClick="loraRadioTest"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_button_height"
+        android:text="@string/lora_pmac_unicast"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_button_height"
+        android:text="@string/lora_pmac_multicast"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_button_height"
+        android:text="@string/lora_pmac_broadcast"/>
+</LinearLayout>

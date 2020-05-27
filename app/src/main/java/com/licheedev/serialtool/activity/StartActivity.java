@@ -32,4 +32,12 @@ public class StartActivity extends AppCompatActivity {
     public void startGpioTest(View view) {
         startActivity(GpioActivity.class);
     }
+
+    public void startLoRaTest(View view) {
+        startActivity(LoRaActivity.class);
+    }
+
+    public void startCanTest(View view) {
+        startActivity(CanActivity.class);
+    }
 }

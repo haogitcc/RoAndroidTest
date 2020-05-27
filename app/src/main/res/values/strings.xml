@@ -22,6 +22,7 @@
     <string name="lora_configure_command">LoRa配置命令</string>
     <string name="lora_radio">无线电（Radio）</string>
     <string name="lora_pmac_unicast">PMAC单播</string>
+    <string name="lora_pmac_multicast">PMAC组播</string>
     <string name="lora_pmac_broadcast">PMAC广播</string>
 
 <!--    GPIO测试-->
