@@ -1,6 +1,7 @@
 package com.licheedev.serialtool.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.serialport.api.SerialPort;
 import android.serialport.api.SerialPortFinder;
@@ -89,6 +90,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     PortUtils portUtils;
     PortUtils portUtils_RS485;
+    private LoraTestThread loraTestThread;
+    boolean loraTestStarted = false;
 
 
     @Override
@@ -273,10 +276,24 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
             case R.id.btn_send_data:
                 String data;
                 if(loraConfigCmdCb.isChecked())
-                    data = loraConfigCmdSpinner.getSelectedItem().toString();
+                {
+                    if(!loraTestStarted) {
+                        loraTestStarted = true;
+                        data = loraConfigCmdSpinner.getSelectedItem().toString();
+                        loraTestThread = new LoraTestThread(data);
+                        loraTestThread.execute();
+                    }
+                    else
+                    {
+                        loraTestThread.stop();
+                        loraTestStarted = false;
+                    }
+                }
                 else
+                {
                     data  = mEtData.getText().toString().trim();
-                sendData(mDevice.getPath(), portUtils, data);
+                    sendData(mDevice.getPath(), portUtils, data);
+                }
                 break;
             case R.id.btn_send_data_1:
                 sendData(mDevice_RS485.getPath(), portUtils_RS485, mEtData_RS485.getText().toString().trim());
@@ -456,6 +473,59 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 break;
             default:
                 break;
+        }
+    }
+
+
+
+    private class LoraTestThread extends AsyncTask {
+        private boolean flag = false;
+        String data;
+
+        public LoraTestThread(String data) {
+            this.data = data;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            if(mBtnSendData.getText() == getString(R.string.send_data))
+            {
+                mBtnSendData.setText(getString(R.string.sending_data));
+                loraConfigCmdCb.setEnabled(false);
+                flag = true;
+            }
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+
+            while(flag)
+            {
+                sendData(mDevice.getPath(), portUtils, data);
+                Log.d(TAG, "doInBackground: ");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.d(TAG, "doInBackground: send stop!");
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            if(mBtnSendData.getText() == getString(R.string.sending_data))
+            {
+                mBtnSendData.setText(getString(R.string.send_data));
+                loraConfigCmdCb.setEnabled(true);
+            }
+        }
+
+        public void stop() {
+            this.flag = false;
         }
     }
 }

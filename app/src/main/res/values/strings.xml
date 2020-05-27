@@ -14,6 +14,7 @@
     <string name="close_serial_port">关闭串口</string>
     <string name="no_serial_device">找不到串口设备</string>
     <string name="send_data">发送命令</string>
+    <string name="sending_data">正在发送...</string>
     <string name="input_data">输入命令</string>
     <string name="load_cmd_list">加载命令列表</string>
     <string name="rs485_use_as_recive">RS485作为接收</string>
