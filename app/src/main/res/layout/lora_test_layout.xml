@@ -2,26 +2,159 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_button_height"
-        android:text="@string/lora_radio"
-        android:onClick="loraRadioTest"/>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_button_height"
-        android:text="@string/lora_pmac_unicast"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/horizontal_margin"
+            android:paddingRight="@dimen/horizontal_margin">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_button_height"
-        android:text="@string/lora_pmac_multicast"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/horizontal_margin"
+                android:text="@string/select_serial_port"
+                android:textColor="@color/white"
+                android:textSize="@dimen/default_text_size"
+                android:textStyle="bold" />
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/default_button_height"
-        android:text="@string/lora_pmac_broadcast"/>
+            <Spinner
+                android:id="@+id/lora_device_spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/normal_8dp"
+                android:layout_weight="1"
+                android:background="@color/colorLightBlue"
+                android:textSize="@dimen/default_text_size"
+                android:entries="@array/baudrates" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/horizontal_margin"
+                android:layout_marginRight="@dimen/horizontal_margin"
+                android:text="@string/select_baud_rate"
+                android:textColor="@color/white"
+                android:textSize="@dimen/default_text_size"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/lora_baudrate_spinner"
+                android:layout_width="@dimen/normal_120dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorLightBlue"
+                android:textSize="@dimen/default_text_size"
+                android:entries="@array/baudrates" />
+
+            <Button
+                android:layout_width="@dimen/normal_240dp"
+                android:layout_height="@dimen/default_button_height"
+                android:layout_marginLeft="@dimen/horizontal_margin"
+                android:text="@string/open_serial_port"
+                android:textSize="@dimen/default_text_size"
+                android:onClick="loraOpenSerial"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height">
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/default_button_height"
+                android:text="@string/lora_comm_test"
+                android:onClick="loraCommTest"/>
+            <Spinner
+                android:id="@+id/lora_command_spinner"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:entries="@array/command_values"/>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height"
+            android:text="@string/lora_radio"
+            android:onClick="loraRadioTest" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height">
+            <Button
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/default_button_height"
+                android:text="@string/lora_pmac_unicast"
+                android:onClick="loraUnicastTest"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/default_button_height">
+                <EditText
+                    android:id="@+id/lora_from_et"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/default_button_height"
+                    android:text="1001"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="0.5"
+                    android:layout_height="wrap_content"
+                    android:text=" to "/>
+                <EditText
+                    android:id="@+id/lora_dest_et"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="@dimen/default_button_height"
+                    android:text="1002"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height"
+            android:text="@string/lora_pmac_multicast"
+            android:onClick="loraMulticastTest"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height"
+            android:text="@string/lora_pmac_broadcast"
+            android:onClick="loraBroadcastTest"/>
+
+        <EditText
+            android:id="@+id/lora_data_et"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/default_button_height"
+            android:hint="@string/input_data"
+            android:inputType="textCapCharacters"
+            android:singleLine="true"
+            android:text="Lora Test"
+            android:textSize="@dimen/edit_text_size" />
+
+        <Button
+            android:id="@+id/lora_send_btn"
+            style="@style/ButtonStyle"
+            android:text="@string/send_data"
+            android:onClick="loraSendData"/>
+    </LinearLayout>
+    <include
+        layout="@layout/include_fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.2" />
 </LinearLayout>

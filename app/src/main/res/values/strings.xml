@@ -21,6 +21,7 @@
     <string name="test_multi_sreial">测试串口互发</string>
     <string name="second_use_as_rs485">第二个作为RS485</string>
     <string name="lora_configure_command">LoRa配置命令</string>
+    <string name="lora_comm_test">LoRa通讯测试</string>
     <string name="lora_radio">无线电（Radio）</string>
     <string name="lora_pmac_unicast">PMAC单播</string>
     <string name="lora_pmac_multicast">PMAC组播</string>

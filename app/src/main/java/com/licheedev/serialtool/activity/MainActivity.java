@@ -1,7 +1,6 @@
 package com.licheedev.serialtool.activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.serialport.api.SerialPort;
 import android.serialport.api.SerialPortFinder;
@@ -26,8 +25,6 @@ import com.licheedev.serialtool.util.ToastUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +32,7 @@ import jnigpio.GPIOControl;
 
 import static com.licheedev.serialtool.R.array.baudrates;
 
-public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class MainActivity extends BaseActivity implements AdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "MainActivity";
     @BindView(R.id.spinner_devices)
@@ -64,22 +61,12 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     @BindView(R.id.et_data_1)
     EditText mEtData_RS485;
 
-    CheckBox loraConfigCmdCb;
-    Spinner loraConfigCmdSpinner;
     CheckBox multiSerialCb;
     CheckBox secondUseAsRs485Cb;
     CheckBox rs485AsReceiveCb;
-    Button radioBtn;
-    Button pmacUnicastBtn;
-    Button pmacBroadcastBtn;
-//    EditText radioEt;
-//    EditText pmacUnicastEt;
-    EditText fromAddrEt;
-    EditText toAddrEt;
 
     private String[] mDevices;
     private String[] mBaudrates;
-    private String[] mCmdList;
 
     private boolean mIsOpen = false;
     private boolean mIsOpen_RS485 = false;
@@ -90,9 +77,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     PortUtils portUtils;
     PortUtils portUtils_RS485;
-    private LoraTestThread loraTestThread;
-    boolean loraTestStarted = false;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,26 +87,18 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         multiSerialCb.setOnCheckedChangeListener(this);
         secondUseAsRs485Cb.setOnCheckedChangeListener(this);
         rs485AsReceiveCb.setOnCheckedChangeListener(this);
-        loraConfigCmdCb.setOnCheckedChangeListener(this);
-
-        radioBtn.setOnClickListener(this);
-        pmacUnicastBtn.setOnClickListener(this);
-        pmacBroadcastBtn.setOnClickListener(this);
 
         mEtData.setTransformationMethod(new AllCapTransformationMethod(true));
 
         updateForMultiSerial(multiSerialCb.isChecked());
 
         initDevice();
-        mCmdList = getResources().getStringArray(R.array.lora_demos);
         initSpinners();
         mDevice = new Device();
         mDevice_RS485 = new Device();
     }
 
     private void updateForMultiSerial(boolean isMulti) {
-        if(loraConfigCmdCb.isChecked())
-            loraConfigCmdCb.setChecked(!isMulti);
         findViewById(R.id.second_serial_layout).setVisibility(isMulti?View.VISIBLE:View.GONE);
         secondUseAsRs485Cb.setVisibility(isMulti?View.VISIBLE:View.GONE);
         updateForUseAsRs485(rs485AsReceiveCb.isChecked());
@@ -130,18 +106,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
     private void updateForUseAsRs485(boolean useAsRs485) {
         rs485AsReceiveCb.setVisibility(useAsRs485?View.VISIBLE:View.GONE);
-    }
-
-    private void updateForLoRaConfigCmd(boolean isChecked) {
-        int visable = isChecked?View.VISIBLE:View.GONE;
-        if(multiSerialCb.isChecked())
-            multiSerialCb.setChecked(!isChecked);
-        loraConfigCmdSpinner.setVisibility(visable);
-        findViewById(R.id.lora_radio_test_layout).setVisibility(visable);
-        findViewById(R.id.lora_pmac_unicast_test_layout).setVisibility(visable);
-        findViewById(R.id.lora_pmac_broadcast_test_layout).setVisibility(visable);
-        int invisable = (!isChecked)?View.VISIBLE:View.GONE;
-        mEtData.setVisibility(invisable);
     }
 
     @Override
@@ -164,18 +128,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         multiSerialCb = findViewById(R.id.test_multi_serial_cb);
         secondUseAsRs485Cb = findViewById(R.id.second_serial_use_as_rs485);
         rs485AsReceiveCb = findViewById(R.id.rs485_as_receive_cb);
-
-        loraConfigCmdCb = findViewById(R.id.lora_config_cmd_cb);
-        loraConfigCmdSpinner = findViewById(R.id.lora_command_spinner);
-
-//        radioEt = findViewById(R.id.lora_radio_data_et);
-//        pmacUnicastEt = findViewById(R.id.lora_pmac_unicast_data_et);
-        radioBtn = findViewById(R.id.lora_radio_test_btn);
-        pmacUnicastBtn = findViewById(R.id.lora_pmac_unicast_test_btn);
-        pmacBroadcastBtn = findViewById(R.id.lora_pmac_broadcast_test_btn);
-
-        fromAddrEt = findViewById(R.id.lora_addr_from);
-        toAddrEt = findViewById(R.id.lora_addr_to);
     }
 
     /**
@@ -194,7 +146,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
         }
         // 波特率
         mBaudrates = getResources().getStringArray(baudrates);
-
     }
 
     /**
@@ -223,11 +174,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
 
         mSpinnerBaudrate.setSelection(12);
         mSpinnerBaudrate_RS485.setSelection(12);
-
-        ArrayAdapter<String> loraCmdAdapter = new ArrayAdapter<String>(this, R.layout.spinner_default_item, mCmdList);
-        loraCmdAdapter.setDropDownViewResource(R.layout.spinner_item);
-        loraConfigCmdSpinner.setAdapter(loraCmdAdapter);
-        loraConfigCmdSpinner.setOnItemSelectedListener(this);
     }
 
     @OnClick({ R.id.btn_open_device, R.id.btn_send_data, R.id.btn_load_list,
@@ -274,26 +220,8 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 }
                 break;
             case R.id.btn_send_data:
-                String data;
-                if(loraConfigCmdCb.isChecked())
-                {
-                    if(!loraTestStarted) {
-                        loraTestStarted = true;
-                        data = loraConfigCmdSpinner.getSelectedItem().toString();
-                        loraTestThread = new LoraTestThread(data);
-                        loraTestThread.execute();
-                    }
-                    else
-                    {
-                        loraTestThread.stop();
-                        loraTestStarted = false;
-                    }
-                }
-                else
-                {
-                    data  = mEtData.getText().toString().trim();
-                    sendData(mDevice.getPath(), portUtils, data);
-                }
+                String data  = mEtData.getText().toString().trim();
+                sendData(mDevice.getPath(), portUtils, data);
                 break;
             case R.id.btn_send_data_1:
                 sendData(mDevice_RS485.getPath(), portUtils_RS485, mEtData_RS485.getText().toString().trim());
@@ -372,9 +300,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         switch (buttonView.getId())
         {
-            case  R.id.lora_config_cmd_cb:
-                updateForLoRaConfigCmd(isChecked);
-                break;
             case R.id.test_multi_serial_cb:
                 updateForMultiSerial(isChecked);
                 break;
@@ -389,143 +314,6 @@ public class MainActivity extends BaseActivity implements AdapterView.OnItemSele
                 break;
             default:
                 break;
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        List<String> datalist = new ArrayList<String>();
-        switch (v.getId()) {
-            case R.id.lora_radio_test_btn:
-                datalist.clear();
-                datalist.add("+++");
-                datalist.add("at+def");
-                datalist.add("+++");
-                datalist.add("at+freq=470000000");
-                datalist.add("at+sf=12");
-                datalist.add("at+bw=125");
-                datalist.add("at+mode=radio");
-                datalist.add("at+reboot");
-                datalist.add("+++");
-                datalist.add("at+exit");
-                datalist.add("Radio 470MHz test");
-
-                String[] datas = datalist.toArray(new String[datalist.size()]);
-                for (String data : datas) {
-                    Log.d(TAG, "Radio test: " + data);
-                    sendData(mDevice.getPath(), portUtils, data);
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case R.id.lora_pmac_unicast_test_btn:
-                datalist.clear();
-                datalist.add("+++");
-                datalist.add("at+def");
-                datalist.add("+++");
-                datalist.add("at+mode=pmac");
-                datalist.add("at+reboot");
-                datalist.add("+++");
-                datalist.add("at+plocal=0x"+fromAddrEt.getText().toString().trim());
-                datalist.add("at+ptransdest=0x"+toAddrEt.getText().toString().trim());
-                datalist.add("at+ptransmode=ucast");
-                datalist.add("at+exit");
-                datalist.add("PMAC Unicast test");
-
-                String[] datas1 = datalist.toArray(new String[datalist.size()]);
-                for (String data : datas1) {
-                    Log.d(TAG, "Unicast test: " + data);
-                    sendData(mDevice.getPath(), portUtils, data);
-
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            case R.id.lora_pmac_broadcast_test_btn:
-                datalist.clear();
-                datalist.add("+++");
-                datalist.add("at+def");
-                datalist.add("+++");
-                datalist.add("at+mode=pmac");
-                datalist.add("at+reboot");
-                datalist.add("+++");
-                datalist.add("at+ptransdest=0xffff");
-                datalist.add("at+ptransmode=ucast");
-                datalist.add("at+exit");
-                datalist.add("PMAC BroadCast Test");
-
-                String[] datas2 = datalist.toArray(new String[datalist.size()]);
-                for (String data : datas2) {
-                    Log.d(TAG, "PMAC Brodcast test: " + data);
-                    sendData(mDevice.getPath(), portUtils, data);
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-    }
-
-
-
-    private class LoraTestThread extends AsyncTask {
-        private boolean flag = false;
-        String data;
-
-        public LoraTestThread(String data) {
-            this.data = data;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if(mBtnSendData.getText() == getString(R.string.send_data))
-            {
-                mBtnSendData.setText(getString(R.string.sending_data));
-                loraConfigCmdCb.setEnabled(false);
-                flag = true;
-            }
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            while(flag)
-            {
-                sendData(mDevice.getPath(), portUtils, data);
-                Log.d(TAG, "doInBackground: ");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            Log.d(TAG, "doInBackground: send stop!");
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            if(mBtnSendData.getText() == getString(R.string.sending_data))
-            {
-                mBtnSendData.setText(getString(R.string.send_data));
-                loraConfigCmdCb.setEnabled(true);
-            }
-        }
-
-        public void stop() {
-            this.flag = false;
         }
     }
 }
