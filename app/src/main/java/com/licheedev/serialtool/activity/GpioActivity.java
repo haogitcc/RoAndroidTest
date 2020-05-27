@@ -165,27 +165,27 @@ public class GpioActivity extends Activity {
         switch (id)
         {
             case R.id.btn_led1:
-                updateLed(tv, LED1);
+                updateLed(tv, LED1, Color.RED);
                 break;
             case R.id.btn_led2:
-                updateLed(tv, LED2);
+                updateLed(tv, LED2, Color.YELLOW);
                 break;
             case R.id.btn_led3:
-                updateLed(tv, LED3);
+                updateLed(tv, LED3, Color.BLUE);
                 break;
             default:
                 break;
         }
     }
 
-    private void updateLed(TextView tv, int led) {
+    private void updateLed(TextView tv, int led, int color) {
         if(getLedStatus(led) == LED_ON) {
             if(setLedStatus(led, LED_OFF))
                 tv.setTextColor(Color.BLACK);
         }
         else {
             if(setLedStatus(led, LED_ON))
-                tv.setTextColor(Color.GREEN);
+                tv.setTextColor(color);
         }
     }
 }

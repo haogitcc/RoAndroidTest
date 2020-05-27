@@ -50,6 +50,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/btn_led3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="@string/led3"
+            android:textSize="25dp"
+            android:onClick="setLedStatus"/>
+
         <TextView
             android:id="@+id/btn_led1"
             android:layout_width="0dp"
@@ -67,16 +78,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/led2"
-            android:textSize="25dp"
-            android:onClick="setLedStatus"/>
-
-        <TextView
-            android:id="@+id/btn_led3"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="@string/led3"
             android:textSize="25dp"
             android:onClick="setLedStatus"/>
 
